@@ -39,7 +39,7 @@ public class FeatureContextImpl implements FeatureContext {
   }
 
   @Override
-  public <F> F add(final @NonNull Class<F> type, final @Nullable String id, final @NonNull F feature) {
+  public <F> @NonNull F add(final @NonNull Class<F> type, final @Nullable String id, final @NonNull F feature) {
     // Don't insert a proxied feature.
     if(feature instanceof Proxied) {
       return feature;
@@ -53,8 +53,9 @@ public class FeatureContextImpl implements FeatureContext {
     return feature;
   }
 
-  protected <F> FeatureContextEntry<F> entry(final Class<F> type, final @NonNull String id) {
-    FeatureContextEntry<F> entry = (FeatureContextEntry<F>) this.entries.get(type, id);
+  protected <F> @NonNull FeatureContextEntry<F> entry(final @NonNull Class<F> type, final @NonNull String id) {
+    @SuppressWarnings("unchecked")
+    @Nullable FeatureContextEntry<F> entry = (FeatureContextEntry<F>) this.entries.get(type, id);
     if(entry == null) {
       entry = this.createEntry(type, id);
       this.entries.put(type, id, entry);
@@ -62,7 +63,7 @@ public class FeatureContextImpl implements FeatureContext {
     return entry;
   }
 
-  protected <F> FeatureContextEntry<F> createEntry(final @NonNull Class<F> type, final @NonNull String id) {
+  protected <F> @NonNull FeatureContextEntry<F> createEntry(final @NonNull Class<F> type, final @NonNull String id) {
     return new FeatureContextEntryImpl<>(type, id);
   }
 

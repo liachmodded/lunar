@@ -26,9 +26,8 @@ package net.kyori.lunar.reflect;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.Collections;
+import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.LinkedList;
 import java.util.function.Predicate;
 
 /**
@@ -41,6 +40,8 @@ public final class Hierarchy {
   /**
    * Finds a class in the hierarchy matching the provided {@code type} and {@code predicate}.
    *
+   * <p>This implementation is based on a breath-first search algorithm.</p>
+   *
    * @param first the first class, used to start the search
    * @param type the type to allow
    * @param predicate the predicate to find a result
@@ -49,21 +50,26 @@ public final class Hierarchy {
    */
   // thanks, kenzie
   public static <T> @Nullable Class<? extends T> find(final @NonNull Class<? extends T> first, final @NonNull Class<T> type, final @NonNull Predicate<Class<? extends T>> predicate) {
-    final Deque<Class<?>> classes = new LinkedList<>();
+    final Deque<@NonNull Class<? extends T>> classes = new ArrayDeque<>();
     classes.add(first);
 
     while(!classes.isEmpty()) {
-      final /* @Nullable */ Class<?> next = classes.removeFirst();
-      if(next == null || !type.isAssignableFrom(next)) {
-        continue;
+      final @NonNull Class<? extends T> next = classes.removeFirst();
+
+      if(predicate.test(next)) {
+        return next;
       }
 
-      if(predicate.test((Class<? extends T>) next)) {
-        return (Class<? extends T>) next;
+      final @Nullable Class<?> parent = next.getSuperclass();
+      if(parent != null && type.isAssignableFrom(parent)) {
+        classes.add(parent.asSubclass(type));
       }
 
-      classes.add(next.getSuperclass());
-      Collections.addAll(classes, next.getInterfaces());
+      for(final @NonNull Class<?> interfaceType : next.getInterfaces()) {
+        if(type.isAssignableFrom(interfaceType)) {
+          classes.add(interfaceType.asSubclass(type));
+        }
+      }
     }
 
     return null;

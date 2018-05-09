@@ -25,6 +25,7 @@ package net.kyori.lunar.collection;
 
 import com.google.common.collect.Iterables;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 
 import java.util.Collection;
 import java.util.Random;
@@ -44,8 +45,9 @@ public final class MoreIterables {
    * @param iterable the iterable
    * @param <T> the type
    * @return a random element
+   * @throws IndexOutOfBoundsException when the iterable is empty
    */
-  public static <T> /* @Nullable */ T random(final @NonNull Iterable<T> iterable) {
+  public static <@PolyNull T> @PolyNull T random(final @NonNull Iterable<@PolyNull T> iterable) {
     return random(RANDOM, iterable);
   }
 
@@ -56,8 +58,9 @@ public final class MoreIterables {
    * @param allowed a collection of allowed values
    * @param <T> the type
    * @return a random element
+   * @throws IndexOutOfBoundsException when the iterable is empty
    */
-  public static <T> /* @Nullable */ T random(final @NonNull Iterable<T> iterable, final @NonNull Collection<T> allowed) {
+  public static <@PolyNull T> @PolyNull T random(final @NonNull Iterable<@PolyNull T> iterable, final @NonNull Collection<@PolyNull T> allowed) {
     return random(Iterables.filter(iterable, allowed::contains));
   }
 
@@ -68,8 +71,9 @@ public final class MoreIterables {
    * @param iterable the iterable
    * @param <T> the type
    * @return a random element
+   * @throws IndexOutOfBoundsException when the iterable is empty
    */
-  public static <T> /* @Nullable */ T random(final @NonNull Random random, final @NonNull Iterable<T> iterable) {
+  public static <@PolyNull T> @PolyNull T random(final @NonNull Random random, final @NonNull Iterable<@PolyNull T> iterable) {
     final int size = Iterables.size(iterable);
     if(size == 0) {
       throw new IndexOutOfBoundsException("cannot get random value from empty iterable");
@@ -86,8 +90,9 @@ public final class MoreIterables {
    * @param allowed a collection of allowed values
    * @param <T> the type
    * @return a random element
+   * @throws IndexOutOfBoundsException when the iterable is empty
    */
-  public static <T> /* @Nullable */ T random(final @NonNull Random random, final @NonNull Iterable<T> iterable, final @NonNull Collection<T> allowed) {
+  public static <@PolyNull T> @PolyNull T random(final @NonNull Random random, final @NonNull Iterable<@PolyNull T> iterable, final @NonNull Collection<@PolyNull T> allowed) {
     return random(random, Iterables.filter(iterable, allowed::contains));
   }
 }

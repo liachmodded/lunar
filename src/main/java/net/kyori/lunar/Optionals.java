@@ -55,6 +55,7 @@ public final class Optionals {
    * @param <T> the type
    * @return the optional
    */
+  @SuppressWarnings("unchecked")
   public static <T> @NonNull Optional<T> cast(final @NonNull Optional<?> optional, final @NonNull Class<T> type) {
     // not necessary to re-wrap, we can just cast
     return isInstance(optional, type) ? (Optional<T>) optional : Optional.empty();
@@ -68,6 +69,7 @@ public final class Optionals {
    * @param <T> the type
    * @return the optional
    */
+  @SuppressWarnings("unchecked")
   public static <T> @NonNull Optional<T> cast(final @Nullable Object object, final @NonNull Class<T> type) {
     return type.isInstance(object) ? Optional.of((T) object) : Optional.empty();
   }
@@ -84,6 +86,6 @@ public final class Optionals {
     return Arrays.stream(optionals)
       .filter(Optional::isPresent)
       .findFirst()
-      .orElse(Optional.empty());
+      .orElseGet(Optional::empty);
   }
 }

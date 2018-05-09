@@ -28,12 +28,11 @@ import org.junit.jupiter.api.Test;
 import java.util.OptionalDouble;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PrimitiveOptionalsTest {
   @Test
   void testMap() {
-    assertTrue(PrimitiveOptionals.map(OptionalDouble.of(10.283), value -> value * 2).getAsDouble() == 20.566);
+    assertEquals( 20.566, PrimitiveOptionals.map(OptionalDouble.of(10.283), value -> value * 2).getAsDouble());
   }
 
   @Test

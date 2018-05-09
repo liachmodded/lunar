@@ -37,11 +37,13 @@ public class FeatureContextEntryImpl<F> implements FeatureContextEntry<F> {
   /**
    * The feature type.
    */
-  private final @NonNull Class<F> type;
+  // Not private for inner class
+  final @NonNull Class<F> type;
   /**
    * The id used for referencing this feature.
    */
-  private final @NonNull String id;
+  // Not private for inner class
+  final @NonNull String id;
   /**
    * The feature.
    */
@@ -76,6 +78,7 @@ public class FeatureContextEntryImpl<F> implements FeatureContextEntry<F> {
     return this.proxy();
   }
 
+  @SuppressWarnings("unchecked")
   private F proxy() {
     if(this.proxiedFeature == null) {
       class ProxiedFeatureImpl extends MethodHandleInvocationHandler {
@@ -111,7 +114,7 @@ public class FeatureContextEntryImpl<F> implements FeatureContextEntry<F> {
     return this.proxiedFeature;
   }
 
-  private F feature() {
+  F feature() {
     if(!this.defined()) {
       throw new IllegalStateException("feature of type " + this.toString() + " has not been defined");
     }
@@ -134,7 +137,7 @@ public class FeatureContextEntryImpl<F> implements FeatureContextEntry<F> {
   private Class<?>[] proxyClasses() {
     final List<Class<?>> classes = new ArrayList<>(2);
     this.proxyClasses(classes);
-    return classes.toArray(new Class<?>[classes.size()]);
+    return classes.toArray(new Class<?>[0]);
   }
 
   protected void proxyClasses(final List<Class<?>> classes) {

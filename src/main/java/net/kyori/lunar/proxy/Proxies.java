@@ -72,7 +72,7 @@ public interface Proxies {
    * @throws IllegalArgumentException if {@code interfaces} contains a class that is not an interface
    */
   static <T> @NonNull T create(final @NonNull ClassLoader loader, final @NonNull Class<T> interfaceType, final @NonNull List<Class<?>> interfaces, final @NonNull InvocationHandler handler) {
-    return create(loader, interfaceType, interfaces.toArray(new Class<?>[interfaces.size()]), handler);
+    return create(loader, interfaceType, interfaces.toArray(new Class<?>[0]), handler);
   }
 
   /**
@@ -99,7 +99,7 @@ public interface Proxies {
    * @throws IllegalArgumentException if {@code interfaces} contains a class that is not an interface
    */
   static @NonNull Object create(final @NonNull ClassLoader loader, final @NonNull List<Class<?>> interfaces, final @NonNull InvocationHandler handler) {
-    return create(loader, interfaces.toArray(new Class<?>[interfaces.size()]), handler);
+    return create(loader, interfaces.toArray(new Class<?>[0]), handler);
   }
 
   /**

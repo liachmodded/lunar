@@ -23,6 +23,8 @@
  */
 package net.kyori.lunar.collection;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -31,18 +33,33 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MoreIterablesTest {
   @Test
   void testRandom() {
-    final Collection<String> a = Arrays.asList(
+    final Collection<@NonNull String> a = Arrays.asList(
       "abc",
       "def",
       "ghi",
       "jkl"
     );
+    assertNotNull(MoreIterables.random(a));
+    assertTrue(a.contains(MoreIterables.random(a)));
+  }
+
+  @Test
+  void testRandomNullable() {
+    final Collection<@Nullable Integer> a = Arrays.asList(
+      null,
+      null,
+      null,
+      null
+    );
+    assertNull(MoreIterables.random(a));
     assertTrue(a.contains(MoreIterables.random(a)));
   }
 

@@ -266,6 +266,7 @@ public final class Exceptions {
    * @return nothing
    * @throws E the exception
    */
+  @SuppressWarnings("unchecked")
   public static <E extends Throwable> @NonNull RuntimeException rethrow(final @NonNull Throwable exception) throws E {
     throw (E) exception;
   }

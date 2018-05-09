@@ -30,8 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class EvenMoreObjectsTest {
   @Test
@@ -55,22 +54,20 @@ class EvenMoreObjectsTest {
 
   @Test
   void testEquals() {
-    assertTrue(new Foo(0).equals(new Foo(0)));
-    assertFalse(new Foo(0).equals(new Foo(1)));
+    assertEquals(new Foo(0), new Foo(0));
+    assertNotEquals(new Foo(0), new Foo(1));
   }
 
   private static class Foo {
     private final int baz;
 
-    private Foo(final int baz) {
+    Foo(final int baz) {
       this.baz = baz;
     }
 
     @Override
     public boolean equals(final Object other) {
-      return EvenMoreObjects.equals(this, other, that -> {
-        return this.baz == that.baz;
-      });
+      return EvenMoreObjects.equals(this, other, that -> this.baz == that.baz);
     }
   }
 }

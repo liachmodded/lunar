@@ -25,6 +25,7 @@ package net.kyori.lunar;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -44,7 +45,7 @@ public final class EvenMoreObjects {
    * @param <T> the value type
    * @return the value
    */
-  public static <T> @NonNull T get(final Supplier<T> supplier) {
+  public static <@PolyNull T> T get(final Supplier<T> supplier) {
     return supplier.get();
   }
 
@@ -56,7 +57,7 @@ public final class EvenMoreObjects {
    * @param <T> the value type
    * @return the value
    */
-  public static <T> @NonNull T make(final @NonNull T value, final @NonNull Consumer<T> consumer) {
+  public static <@PolyNull T> T make(final T value, final @NonNull Consumer<T> consumer) {
     consumer.accept(value);
     return value;
   }
@@ -70,8 +71,8 @@ public final class EvenMoreObjects {
    * @param <T> the type
    * @return {@code true} if {@code you} equals {@code me}
    */
-  public static <T> boolean equals(final @NonNull T me, final @Nullable Object you, final @NonNull Predicate<T> predicate) {
-    final Class<T> type = (Class<T>) me.getClass();
+  public static <@NonNull T> boolean equals(final T me, final @Nullable Object you, final @NonNull Predicate<? super T> predicate) {
+    @SuppressWarnings("unchecked") final Class<T> type = (Class<T>) me.getClass();
     return equals(type, me, you, predicate);
   }
 
@@ -85,7 +86,7 @@ public final class EvenMoreObjects {
    * @param <T> the type
    * @return {@code true} if {@code you} equals {@code me}
    */
-  public static <T> boolean equals(final @NonNull Class<T> type, final @NonNull T me, final @Nullable Object you, final @NonNull Predicate<T> predicate) {
-    return me == you || (you != null && type.isInstance(you) && predicate.test(type.cast(you)));
+  public static <@NonNull T> boolean equals(final @NonNull Class<T> type, final T me, final @Nullable Object you, final @NonNull Predicate<? super T> predicate) {
+    return me == you || (type.isInstance(you) && predicate.test(type.cast(you)));
   }
 }

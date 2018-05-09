@@ -62,7 +62,7 @@ class FeatureContextTest {
   private static class TestFeatureImpl implements TestFeature {
     private final int value;
 
-    private TestFeatureImpl(final int value) {
+    TestFeatureImpl(final int value) {
       this.value = value;
     }
 
